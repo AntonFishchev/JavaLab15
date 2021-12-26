@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Каталог товаров</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+        .actions{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+        .container{
+            max-width: 50%;
+        }
+        form {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название товара</th>
+                    <th>Цена</th>
+<!--                    <th>Действия</th>-->
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.id}"/>
+                    <td th:text="${product.title}"/>
+                    <td th:text="${product.price}"/>
+<!--                    <td>-->
+<!--                        <a th:href="@{'/products/show/' + ${product.id}}" th:text="Просмотреть"/>-->
+<!--                    </td>-->
+                </tr>
+            </tbody>
+        </table>
+        <nav th:if = "${totalPages.length gt 1}">
+            <a style="margin-right: 10px"
+               th:each="i : ${totalPages}"
+               th:href="@{${'/products?page='} + ${i - 1}}"
+               th:text="${i}">
+            </a>
+        </nav>
+    </div>
+
+
+    <div class="actions">
+    <form th:action="@{/products}" class="form-horizontal">
+    <div class="Filter">
+        <h2>Фильтрация</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <td><input th:value = "${Min != null} ? ${Min}" name="Min" placeholder="*min" class="form-control"></td>
+                    <td><input th:value = "${Max != null} ? ${Max}" name="Max" placeholder="*max" class="form-control"></td>
+                    <td><input th:value = "${Substring != null} ? ${Substring}" name="Substring" placeholder="*text" class="form-control"></td>
+                    <td><input type="submit" value="Фильтровать" class="btn btn-primary"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </form>
+
+
+    <form th:action="@{/add}" class="form-horizontal">
+    <div class="Add">
+        <h2>Добавление товара</h2>
+        <table>
+            <tbody>
+            <tr>
+                <td><input name="Name" placeholder="*name" class="form-control"></td>
+                <td><input name="Price" placeholder="*price" class="form-control"></td>
+                <td><input type="submit" value="Добавить"  class="btn btn-primary"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </form>
+
+
+    <form th:action="@{/delete}" class="form-horizontal">
+    <div class="Delete">
+        <h2>Удаление товара</h2>
+        <table>
+            <tbody>
+            <tr>
+                <td><input name="id" placeholder="*id" class="form-control"></td>
+                <td><input type="submit" value="Удалить"  class="btn btn-primary"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </form>
+
+
+    <form th:action="@{/change}" class="form-horizontal">
+    <div class="change">
+        <h2>Редактирование товара</h2>
+        <table>
+            <tbody>
+            <tr>
+                <td><input name="ID" placeholder="*id" class="form-control"></td>
+                <td><input name="Name" placeholder="*name" class="form-control"></td>
+                <td><input name="Price" placeholder="*price" class="form-control"></td>
+                <td><input type="submit" value="Изменить"  class="btn btn-primary"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </form>
+    </div>
+</body>
+</html>
